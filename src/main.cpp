@@ -10,11 +10,11 @@ using std::uint32_t;
 using std::uint64_t;
 
 
-const uint32_t SCREEN_WIDTH = 500;
-const uint32_t SCREEN_HEIGHT = 500;
+const uint32_t SCREEN_WIDTH = 600;
+const uint32_t SCREEN_HEIGHT = 600;
 
-const uint64_t BOARD_WIDTH = 50;
-const uint64_t BOARD_HEIGHT = 50;
+const uint64_t BOARD_WIDTH = 200;
+const uint64_t BOARD_HEIGHT = 200;
 
 const uint32_t CELL_WIDTH = SCREEN_WIDTH / BOARD_WIDTH;
 const uint32_t CELL_HEIGHT = SCREEN_HEIGHT / BOARD_HEIGHT;
@@ -68,12 +68,15 @@ int main(int argc, char** argv) {
                               SCREEN_HEIGHT,
                               SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    //renderer.set_blend_mode(BlendBlend);
 
     const uint32_t step_time_ms = 200;
 
     bool running = true;
     bool simulate = false;
+    int32_t mouse_x = 0;
+    int32_t mouse_y = 0;
+    bool mouse_down = false;
+    bool clearing = false;
     uint32_t last_step_time = SDL_GetTicks();
 
     SDL_Event event;
@@ -105,10 +108,17 @@ int main(int argc, char** argv) {
                 case SDL_MOUSEBUTTONDOWN:
                     switch (event.button.button) {
                         case SDL_BUTTON_LEFT:
-                            board.set(event.button.x / CELL_WIDTH, event.button.y / CELL_HEIGHT, true);
+                            mouse_down = true;
+                            clearing = board.get(event.button.x / CELL_WIDTH, event.button.y / CELL_HEIGHT);
                             break;
-                        case SDL_BUTTON_RIGHT:
-                            board.set(event.button.x / CELL_WIDTH, event.button.y / CELL_HEIGHT, false);
+                        default:
+                            break;
+                    }
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    switch (event.button.button) {
+                        case SDL_BUTTON_LEFT:
+                            mouse_down = false;
                             break;
                         default:
                             break;
@@ -120,6 +130,12 @@ int main(int argc, char** argv) {
                 default:
                     break;
             }
+        }
+
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+
+        if (mouse_down) {
+            board.set(mouse_x / CELL_WIDTH, mouse_y / CELL_HEIGHT, !clearing);
         }
 
         // Step the board
