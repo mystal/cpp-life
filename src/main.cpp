@@ -42,11 +42,17 @@ void draw_board(SDL_Renderer* renderer, const LifeBoard& board) {
 int main(int argc, char** argv) {
     LifeBoard board;
 
+    // Try to load a pattern from a file.
     if (argc == 2) {
-        // TODO: Open and attempt to parse the given argument to populate the
-        // grid
+        printf("Loading pattern from: %s\n", argv[1]);
+        FILE* f = fopen(argv[1], "r");
+        uint64_t x, y;
+        while (fscanf(f, "(%lld, %lld)\n", &x, &y) == 2) {
+            printf("Setting (%llu, %llu)\n", x, y);
+            board.set(x, y, true);
+        }
     } else if (argc > 2) {
-        // TODO: Print cmdline help and exit
+        printf("Too many arguments\n\nUsage:\ncpp-life [file]\n");
         return 0;
     }
 
@@ -78,7 +84,7 @@ int main(int argc, char** argv) {
         while (SDL_PollEvent(&event) != 0) {
             switch (event.type) {
                 case SDL_KEYDOWN:
-                    printf("%s\n", SDL_GetKeyName(event.key.keysym.sym));
+                    //printf("%s\n", SDL_GetKeyName(event.key.keysym.sym));
                     switch (event.key.keysym.sym) {
                         case SDLK_ESCAPE:
                             running = false;
