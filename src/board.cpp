@@ -102,6 +102,10 @@ void LifeBoard::step() {
     }
 }
 
+size_t LifeBoard::live_cell_count() const {
+    return alive.size();
+}
+
 LifeBoard::const_iterator LifeBoard::begin() const {
     return alive.cbegin();
 }

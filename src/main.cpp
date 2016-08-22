@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
         FILE* f = fopen(argv[1], "r");
         uint64_t x, y;
         while (fscanf(f, "(%lld, %lld)\n", &x, &y) == 2) {
-            printf("Setting (%llu, %llu)\n", x, y);
+            printf("Setting (%lld, %lld)\n", x, y);
             board.set(x, y, true);
         }
     } else if (argc > 2) {
@@ -150,7 +150,7 @@ int main(int argc, char** argv) {
             step_board = false;
             board.step();
             generation += 1;
-            printf("Generation %u\n", generation);
+            printf("[Generation %u] live cells: %zu\n", generation, board.live_cell_count());
             last_step_time = SDL_GetTicks();
         }
 

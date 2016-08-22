@@ -47,6 +47,8 @@ class LifeBoard {
         void clear();
         void step();
 
+        size_t live_cell_count() const;
+
         typedef std::unordered_set<Cell>::const_iterator const_iterator;
         const_iterator begin() const;
         const_iterator end() const;
