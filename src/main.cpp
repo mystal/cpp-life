@@ -73,6 +73,8 @@ int main(int argc, char** argv) {
 
     bool running = true;
     bool simulate = false;
+    bool step_board = false;
+    uint32_t generation = 0;
     int32_t mouse_x = 0;
     int32_t mouse_y = 0;
     bool mouse_down = false;
@@ -99,7 +101,7 @@ int main(int argc, char** argv) {
                             board.clear();
                             break;
                         case SDLK_s:
-                            board.step();
+                            step_board = true;
                             break;
                         default:
                             break;
@@ -141,7 +143,14 @@ int main(int argc, char** argv) {
         // Step the board
         uint32_t current_time = SDL_GetTicks();
         if (simulate && (current_time - last_step_time >= step_time_ms)) {
+            step_board = true;
+        }
+        if (step_board)
+        {
+            step_board = false;
             board.step();
+            generation += 1;
+            printf("Generation %u\n", generation);
             last_step_time = SDL_GetTicks();
         }
 
