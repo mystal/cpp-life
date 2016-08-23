@@ -39,18 +39,33 @@ void draw_board(SDL_Renderer* renderer, const LifeBoard& board) {
     }
 }
 
+void load_board(const char* pattern_file, LifeBoard& board) {
+    FILE* f = fopen(pattern_file, "r");
+    uint64_t x, y;
+    while (fscanf(f, "(%lld, %lld)\n", &x, &y) == 2) {
+        //printf("Setting (%lld, %lld)\n", x, y);
+        board.set(x, y, true);
+    }
+    fclose(f);
+}
+
+void save_board(const LifeBoard& board) {
+    FILE* output = fopen("board.txt", "w");
+
+    for (const Cell& cell: board) {
+        fprintf(output, "(%lld, %lld)\n", cell.first, cell.second);
+    }
+
+    fclose(output);
+}
+
 int main(int argc, char** argv) {
     LifeBoard board;
 
     // Try to load a pattern from a file.
     if (argc == 2) {
         printf("Loading pattern from: %s\n", argv[1]);
-        FILE* f = fopen(argv[1], "r");
-        uint64_t x, y;
-        while (fscanf(f, "(%lld, %lld)\n", &x, &y) == 2) {
-            printf("Setting (%lld, %lld)\n", x, y);
-            board.set(x, y, true);
-        }
+        load_board(argv[1], board);
     } else if (argc > 2) {
         printf("Too many arguments\n\nUsage:\ncpp-life [file]\n");
         return 0;
@@ -102,6 +117,10 @@ int main(int argc, char** argv) {
                             break;
                         case SDLK_s:
                             step_board = true;
+                            break;
+                        case SDLK_w:
+                            save_board(board);
+                            printf("Saved current board to: board.txt\n");
                             break;
                         default:
                             break;
