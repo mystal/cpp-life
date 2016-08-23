@@ -41,6 +41,9 @@ void draw_board(SDL_Renderer* renderer, const LifeBoard& board) {
 
 void load_board(const char* pattern_file, LifeBoard& board) {
     FILE* f = fopen(pattern_file, "r");
+    if (f == nullptr)
+        return;
+
     uint64_t x, y;
     while (fscanf(f, "(%lld, %lld)\n", &x, &y) == 2) {
         //printf("Setting (%lld, %lld)\n", x, y);
