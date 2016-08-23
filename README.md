@@ -17,7 +17,14 @@ cd build
 Optionally, you can pass a file path as the first argument to load a pattern.
 See the patterns directory for a few built-in ones.
 
-## Controls
+### Controls
+* `Left Click`: Set or unset cells.
 * `Space`: Run the simulation at 5 generations per second.
 * `S`: Step the simulation one generation. Can be held down.
-* `Left Click`: Set or unset cells.
+* `W`: Save out the current board to board.txt.
+
+## To Run Tests
+```
+cd build
+./test/tests
+```
