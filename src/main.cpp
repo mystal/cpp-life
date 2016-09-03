@@ -4,6 +4,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "nuklear.h"
+
 #include "board.h"
 
 using std::uint32_t;

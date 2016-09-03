@@ -14,6 +14,7 @@ add_executable(
     cpp-life
 
     main.cpp
+    nuklear.cpp
 )
 target_link_libraries(
     cpp-life
